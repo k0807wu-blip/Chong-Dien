@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大師課程 | 蟲殿 - 昆蟲生態館</title>
+
+    <!-- 外部資源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #1a3a3a; /* 深森林綠 */
+            --secondary: #c5a059; /* 琥珀金 */
+            --accent: #f4f1ea; /* 米白色背景 */
+            --text: #2d2d2d;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            background-color: var(--accent);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-placeholder {
+            background: linear-gradient(
+                45deg,
+                #e5e7eb 25%,
+                #f3f4f6 25%,
+                #f3f4f6 50%,
+                #e5e7eb 50%,
+                #e5e7eb 75%,
+                #f3f4f6 75%,
+                #f3f4f6 100%
+            );
+            background-size: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+        }
+
+        .title-line::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary);
+            margin-top: 10px;
+        }
+
+        .course-card:hover .course-img {
+            transform: scale(1.05);
+        }
+
+        .course-img {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body>
+    <!-- 導覽列 -->
+    <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm" id="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/index.html" class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-[#1a3a3a] rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    蟲
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-widest text-[#1a3a3a]">蟲殿</span>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-tighter">Insect Palace Ecology</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex space-x-8 font-medium">
+                <a href="/index.html#about" class="hover:text-[#c5a059] transition-colors">關於蟲殿</a>
+                <a href="/news/" class="hover:text-[#c5a059] transition-colors">最新消息</a>
+                <a href="/supplies/" class="hover:text-[#c5a059] transition-colors">養育用品</a>
+                <a href="/lives/" class="hover:text-[#c5a059] transition-colors">活體訂購</a>
+                <a href="/index.html#hotel" class="hover:text-[#c5a059] transition-colors">蟲蟲旅館</a>
+                <a href="/courses/" class="text-[#c5a059]">大師課程</a>
+                <a href="/index.html#contact" class="hover:text-[#c5a059] transition-colors">關於我們</a>
+            </nav>
+
+            <div class="hidden md:block">
+                <a href="/index.html#contact" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
+                    預約諮詢
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 頁面標題區 -->
+    <section class="pt-32 pb-12 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-[#c5a059] font-bold tracking-[0.2em] mb-2 uppercase">Master Workshops</h2>
+            <h1 class="text-4xl md:text-5xl font-black text-primary title-line">大師課程與活動</h1>
+            <div class="w-16 h-1 bg-[#c5a059] mx-auto mt-6"></div>
+            <p class="mt-6 text-gray-500 max-w-2xl mx-auto">
+                從專業的標本製作到深度生態探索，蟲殿講師帶領您進入昆蟲美學的核心領域。
+            </p>
+        </div>
+    </section>
+
+    <!-- 課程列表區 -->
+    <main class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto space-y-20">
+
+                <!-- 課程 1 -->
+                <article class="flex flex-col lg:flex-row gap-10 items-center course-card reveal">
+                    <div class="w-full lg:w-1/2 overflow-hidden rounded-3xl shadow-lg aspect-[4/3] image-placeholder shrink-0">
+                        <img
+                            src="../assets/479057388_1071049448159796_6044251778799757515_n-0ff7a6f1-d81e-4a0e-bf7a-7d859fc394d7.png"
+                            alt="大師班課程照片"
+                            class="w-full h-full object-cover"
+                        />
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-primary text-white text-xs px-3 py-1 rounded-full font-bold">進階大師課</span>
+                            <span class="text-gray-400 text-sm font-medium">
+                                <i class="fa-solid fa-calendar-day mr-1"></i> 2026/05/20 - 05/22
+                            </span>
+                        </div>
+                        <h3 class="text-3xl font-black text-primary mb-6">昆蟲美學：進階標本製作大師班</h3>
+                        <p class="text-gray-600 leading-loose mb-8">
+                            這不僅僅是標本製作，更是一場關於生命的藝術重塑。本課程由蟲殿資深講師授課，將深度解析大型兜蟲與鍬形蟲的肌肉結構、展姿美學及長期保存防護技術。適合具備基礎經驗，渴望提升技術細膩度的昆蟲收藏家。
+                        </p>
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="flex items-center gap-2 text-sm text-gray-500">
+                                <i class="fa-solid fa-clock text-secondary"></i> 每日 14:00 - 18:00
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-500">
+                                <i class="fa-solid fa-location-dot text-secondary"></i> 蟲殿生態教室
+                            </div>
+                        </div>
+                        <a href="/index.html#contact" class="inline-block w-full sm:w-auto text-center bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-secondary transition-all shadow-md">
+                            立即報名課程 <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <div class="h-px bg-gray-200 w-2/3 mx-auto"></div>
+
+                <!-- 課程 2 -->
+                <article class="flex flex-col lg:flex-row-reverse gap-10 items-center course-card reveal">
+                    <div class="w-full lg:w-1/2 overflow-hidden rounded-3xl shadow-lg aspect-[4/3] image-placeholder shrink-0">
+                        <div class="flex flex-col items-center justify-center course-img">
+                            <i class="fa-solid fa-children text-5xl mb-4 opacity-30"></i>
+                            <p class="text-sm font-bold opacity-40">活動宣傳照預留區</p>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="bg-[#2d5a27] text-white text-xs px-3 py-1 rounded-full font-bold">生態教育</span>
+                            <span class="text-gray-400 text-sm font-medium">
+                                <i class="fa-solid fa-calendar-day mr-1"></i> 2026/05/20 - 05/22
+                            </span>
+                        </div>
+                        <h3 class="text-3xl font-black text-primary mb-6">森林秘境：親子生態探索夏令營</h3>
+                        <p class="text-gray-600 leading-loose mb-8">
+                            放下平板電腦，走入微縮森林！為期三天的親子夏令營，我們將帶領家長與孩子一起觀察甲蟲的一生。從卵、幼蟲到成蟲的羽化過程，透過手作與親身觀察，在孩子心中種下熱愛自然、尊重生命的種子。
+                        </p>
+                        <ul class="space-y-2 mb-8 text-sm text-gray-500">
+                            <li><i class="fa-solid fa-check text-secondary mr-2"></i> 專業教案引導，從遊戲中學習</li>
+                            <li><i class="fa-solid fa-check text-secondary mr-2"></i> 親手佈置幼蟲觀察缸</li>
+                            <li><i class="fa-solid fa-check text-secondary mr-2"></i> 贈送完整飼育入門套組</li>
+                        </ul>
+                        <a href="/index.html#contact" class="inline-block w-full sm:w-auto text-center bg-primary text-white px-10 py-4 rounded-xl font-bold hover:bg-secondary transition-all shadow-md">
+                            立即報名參加 <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部行動呼籲 -->
+    <section class="py-20 bg-primary text-white text-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-black mb-6">找不到適合的課程？</h2>
+            <p class="text-gray-300 mb-10 max-w-xl mx-auto">
+                我們也提供學校社團、企業團體或私人小班制的客製化課程需求，歡迎隨時洽詢官方 LINE。
+            </p>
+            <a href="#" class="inline-flex items-center gap-2 bg-secondary text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-primary transition-all">
+                <i class="fa-brands fa-line text-xl"></i> 私訊諮詢客製課程
+            </a>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-8 text-2xl">
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-line"></i></a>
+            </div>
+            <p class="mb-4">Designed by <span class="text-white">蟲殿團隊</span> &copy; 2026 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        window.onscroll = function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');
+            else nav.classList.remove('scrolled', 'py-2');
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
+
