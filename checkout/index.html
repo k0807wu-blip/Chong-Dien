@@ -77,6 +77,9 @@
     <script>
         const CART_KEY = 'chongdien_cart';
         const twd = n => `TWD ${new Intl.NumberFormat('zh-TW').format(n)}`;
+        const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
         const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
 
         const itemsWrap = document.getElementById('summary-items');
@@ -86,8 +89,8 @@
             itemsWrap.innerHTML = cart.map(i => `
                 <div class="flex justify-between gap-3">
                     <div>
-                        <p class="font-bold text-primary">${i.name}</p>
-                        <p class="text-gray-500">${i.size ? `規格 ${i.size} / ` : ''}數量 ${i.qty}</p>
+                        <p class="font-bold text-primary">${escapeHtml(i.name)}</p>
+                        <p class="text-gray-500">${i.size ? `規格 ${escapeHtml(i.size)} / ` : ''}數量 ${i.qty}</p>
                     </div>
                     <p class="font-bold">${twd(i.price * i.qty)}</p>
                 </div>

@@ -98,6 +98,9 @@
         const twd = n => `TWD ${new Intl.NumberFormat('zh-TW').format(n)}`;
         const getCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
         const setCart = cart => localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
 
         function updateCartBadge(cart) {
             const count = cart.reduce((sum, i) => sum + i.qty, 0);
@@ -126,9 +129,9 @@
             wrap.innerHTML = cart.map((item, idx) => `
                 <article class="bg-white rounded-2xl p-5 flex flex-col md:flex-row md:items-center gap-4">
                     <div class="flex-1">
-                        <p class="text-xs text-secondary font-bold">${item.category || '商品'}</p>
-                        <h4 class="text-lg font-black text-primary">${item.name}</h4>
-                        ${item.size ? `<p class="text-sm text-gray-500">規格：${item.size}</p>` : ''}
+                        <p class="text-xs text-secondary font-bold">${escapeHtml(item.category || '商品')}</p>
+                        <h4 class="text-lg font-black text-primary">${escapeHtml(item.name)}</h4>
+                        ${item.size ? `<p class="text-sm text-gray-500">規格：${escapeHtml(item.size)}</p>` : ''}
                         <p class="text-sm text-gray-500">單價：${twd(item.price)}</p>
                     </div>
                     <div class="flex items-center gap-2">
