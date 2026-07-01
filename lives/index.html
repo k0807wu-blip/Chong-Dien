@@ -77,8 +77,8 @@
             </nav>
 
             <div class="flex items-center space-x-4">
-                <a href="#" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
-                    <i class="fa-solid fa-basket-shopping mr-2"></i>(0)
+                <a href="/cart/" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
+                    <i class="fa-solid fa-basket-shopping mr-2"></i>(<span id="cart-count">0</span>)
                 </a>
             </div>
         </div>
@@ -121,6 +121,14 @@
     </footer>
 
     <script>
+        const CART_KEY = 'chongdien_cart';
+        const getCartCount = () => {
+            const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+            return cart.reduce((sum, item) => sum + item.qty, 0);
+        };
+        const cartCountEl = document.getElementById('cart-count');
+        if (cartCountEl) cartCountEl.textContent = getCartCount();
+
         window.onscroll = function() {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');

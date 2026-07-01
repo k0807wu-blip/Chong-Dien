@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車 | 蟲殿 - 昆蟲生態館</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a3a;
+            --secondary: #c5a059;
+            --accent: #f4f1ea;
+            --text: #2d2d2d;
+        }
+        body {
+            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
+            background-color: var(--accent);
+            color: var(--text);
+        }
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .title-line::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm" id="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/index.html" class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-[#1a3a3a] rounded-full flex items-center justify-center text-white text-xl font-bold">蟲</div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-widest text-[#1a3a3a]">蟲殿</span>
+                    <span class="text-[10px] text-gray-500 uppercase tracking-tighter">Insect Palace Ecology</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex space-x-8 font-medium">
+                <a href="/index.html#about" class="hover:text-[#c5a059] transition-colors">關於蟲殿</a>
+                <a href="/news/" class="hover:text-[#c5a059] transition-colors">最新消息</a>
+                <a href="/supplies/" class="hover:text-[#c5a059] transition-colors">養育用品</a>
+                <a href="/lives/" class="hover:text-[#c5a059] transition-colors">活體訂購</a>
+                <a href="/index.html#hotel" class="hover:text-[#c5a059] transition-colors">蟲蟲旅館</a>
+                <a href="/courses/" class="hover:text-[#c5a059] transition-colors">大師課程</a>
+                <a href="/index.html#contact" class="hover:text-[#c5a059] transition-colors">關於我們</a>
+            </nav>
+            <a href="/cart/" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
+                <i class="fa-solid fa-basket-shopping mr-2"></i><span id="cart-count">(0)</span>
+            </a>
+        </div>
+    </header>
+
+    <section class="pt-32 pb-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-[#c5a059] font-bold tracking-[0.2em] mb-2 uppercase">Shopping Cart</h2>
+            <h1 class="text-4xl md:text-5xl font-black text-primary title-line">購物車</h1>
+        </div>
+    </section>
+
+    <main class="py-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section class="lg:col-span-2">
+                <div id="cart-items" class="space-y-4"></div>
+                <div id="empty-state" class="hidden bg-white rounded-2xl p-8 text-center text-gray-500">
+                    購物車目前是空的，先去逛逛商品吧。
+                </div>
+            </section>
+            <aside class="bg-white rounded-2xl p-6 h-fit">
+                <h3 class="text-xl font-black text-primary mb-4">訂單摘要</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <div class="flex justify-between"><span>商品小計</span><span id="subtotal">TWD 0</span></div>
+                    <div class="flex justify-between"><span>運費</span><span>TWD 0</span></div>
+                </div>
+                <div class="border-t mt-4 pt-4 flex justify-between font-black text-primary text-lg">
+                    <span>總計</span><span id="total">TWD 0</span>
+                </div>
+                <a id="checkout-btn" href="/checkout/" class="mt-6 block w-full text-center bg-primary text-white py-3 rounded-xl font-bold hover:bg-secondary transition-all">
+                    前往結帳
+                </a>
+                <a href="/supplies/" class="mt-3 block w-full text-center border border-primary/20 text-primary py-3 rounded-xl font-bold hover:bg-primary/5 transition-all">
+                    繼續購物
+                </a>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        const CART_KEY = 'chongdien_cart';
+        const twd = n => `TWD ${new Intl.NumberFormat('zh-TW').format(n)}`;
+        const getCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+        const setCart = cart => localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+        function updateCartBadge(cart) {
+            const count = cart.reduce((sum, i) => sum + i.qty, 0);
+            document.getElementById('cart-count').textContent = `(${count})`;
+        }
+
+        function render() {
+            const cart = getCart();
+            updateCartBadge(cart);
+            const wrap = document.getElementById('cart-items');
+            const empty = document.getElementById('empty-state');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            if (!cart.length) {
+                wrap.innerHTML = '';
+                empty.classList.remove('hidden');
+                checkoutBtn.classList.add('pointer-events-none', 'opacity-50');
+                document.getElementById('subtotal').textContent = twd(0);
+                document.getElementById('total').textContent = twd(0);
+                return;
+            }
+
+            empty.classList.add('hidden');
+            checkoutBtn.classList.remove('pointer-events-none', 'opacity-50');
+
+            wrap.innerHTML = cart.map((item, idx) => `
+                <article class="bg-white rounded-2xl p-5 flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-1">
+                        <p class="text-xs text-secondary font-bold">${item.category || '商品'}</p>
+                        <h4 class="text-lg font-black text-primary">${item.name}</h4>
+                        ${item.size ? `<p class="text-sm text-gray-500">規格：${item.size}</p>` : ''}
+                        <p class="text-sm text-gray-500">單價：${twd(item.price)}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button data-action="dec" data-idx="${idx}" class="w-8 h-8 rounded-full border border-gray-300">-</button>
+                        <span class="w-8 text-center font-bold">${item.qty}</span>
+                        <button data-action="inc" data-idx="${idx}" class="w-8 h-8 rounded-full border border-gray-300">+</button>
+                    </div>
+                    <div class="text-right min-w-28">
+                        <p class="font-black text-primary">${twd(item.price * item.qty)}</p>
+                        <button data-action="remove" data-idx="${idx}" class="text-sm text-red-500 mt-1">移除</button>
+                    </div>
+                </article>
+            `).join('');
+
+            const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            document.getElementById('subtotal').textContent = twd(subtotal);
+            document.getElementById('total').textContent = twd(subtotal);
+        }
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-action]');
+            if (!btn) return;
+            const action = btn.getAttribute('data-action');
+            const idx = Number(btn.getAttribute('data-idx'));
+            const cart = getCart();
+            if (!cart[idx]) return;
+            if (action === 'inc') cart[idx].qty += 1;
+            if (action === 'dec') cart[idx].qty = Math.max(1, cart[idx].qty - 1);
+            if (action === 'remove') cart.splice(idx, 1);
+            setCart(cart);
+            render();
+        });
+
+        window.onscroll = function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');
+            else nav.classList.remove('scrolled', 'py-2');
+        };
+
+        render();
+    </script>
+</body>
+</html>
+

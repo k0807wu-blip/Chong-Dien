@@ -102,8 +102,8 @@
             </nav>
 
             <div class="hidden md:block">
-                <a href="#" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
-                    <i class="fa-solid fa-basket-shopping mr-2"></i>(0)
+                <a href="/cart/" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
+                    <i class="fa-solid fa-basket-shopping mr-2"></i>(<span id="cart-count">0</span>)
                 </a>
             </div>
         </div>
@@ -141,6 +141,7 @@
     </footer>
 
     <script>
+        const CART_KEY = 'chongdien_cart';
         const products = [
             {
                 id: 101,
@@ -183,6 +184,29 @@
 
         function formatTwd(n) {
             return new Intl.NumberFormat('zh-TW').format(n);
+        }
+
+        function getCart() {
+            return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+        }
+
+        function setCart(cart) {
+            localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        }
+
+        function refreshCartBadge() {
+            const count = getCart().reduce((sum, item) => sum + item.qty, 0);
+            const el = document.getElementById('cart-count');
+            if (el) el.textContent = count;
+        }
+
+        function addToCart(item) {
+            const cart = getCart();
+            const index = cart.findIndex(i => i.id === item.id && (i.size || '') === (item.size || ''));
+            if (index >= 0) cart[index].qty += item.qty;
+            else cart.push(item);
+            setCart(cart);
+            refreshCartBadge();
         }
 
         function renderProduct(product) {
@@ -256,6 +280,8 @@
                 const stockLine = document.getElementById('stock-line');
                 const stockValue = document.getElementById('stock-value');
                 const stockBadge = document.getElementById('product-stock-badge');
+                let selectedSize = null;
+                let selectedPrice = null;
 
                 sizeButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
@@ -265,6 +291,8 @@
                         const key = btn.getAttribute('data-size-key');
                         const sel = product.sizes.find(s => s.key === key);
                         if (!sel) return;
+                        selectedSize = sel.key;
+                        selectedPrice = sel.price;
 
                         priceValue.textContent = formatTwd(sel.price);
                         stockValue.textContent = sel.stock;
@@ -276,6 +304,19 @@
                         addToCartBtn.disabled = false;
                         addToCartBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                     });
+                });
+
+                addToCartBtn.addEventListener('click', () => {
+                    if (!selectedSize || !selectedPrice) return;
+                    addToCart({
+                        id: product.id,
+                        name: product.name,
+                        category: product.category,
+                        size: selectedSize,
+                        price: selectedPrice,
+                        qty: 1
+                    });
+                    alert(`已加入購物車：${product.name} (${selectedSize})`);
                 });
                 return;
             }
@@ -309,9 +350,9 @@
                         <p class="mt-6 text-gray-600 leading-loose">${product.description}</p>
 
                         <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                            <a href="#" class="flex-1 text-center py-3 rounded-full bg-primary text-white font-bold hover:bg-secondary transition-all">
+                            <button type="button" id="add-to-cart" class="flex-1 text-center py-3 rounded-full bg-primary text-white font-bold hover:bg-secondary transition-all">
                                 <i class="fa-solid fa-cart-shopping mr-2"></i>加入購物車
-                            </a>
+                            </button>
                             <a href="/supplies/" class="flex-1 text-center py-3 rounded-full border border-primary/20 text-primary font-bold hover:bg-primary/5 transition-all">
                                 返回列表
                             </a>
@@ -319,6 +360,21 @@
                     </div>
                 </div>
             `;
+
+            const addToCartBtn = document.getElementById('add-to-cart');
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', () => {
+                    addToCart({
+                        id: product.id,
+                        name: product.name,
+                        category: product.category,
+                        size: null,
+                        price: product.price,
+                        qty: 1
+                    });
+                    alert(`已加入購物車：${product.name}`);
+                });
+            }
         }
 
         const params = new URLSearchParams(window.location.search);
@@ -342,6 +398,7 @@
         } else {
             renderProduct(product);
         }
+        refreshCartBadge();
 
         window.onscroll = function() {
             const nav = document.getElementById('navbar');

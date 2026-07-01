@@ -104,8 +104,8 @@
 
             <div class="flex items-center space-x-4">
                 <button class="text-gray-600 hover:text-[#c5a059]"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <a href="#" class="bg-[#1a3a3a] text-white px-4 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
-                    <i class="fa-solid fa-basket-shopping mr-2"></i>購物車 (0)
+                <a href="/cart/" class="bg-[#1a3a3a] text-white px-4 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
+                    <i class="fa-solid fa-basket-shopping mr-2"></i>購物車 (<span id="cart-count">0</span>)
                 </a>
                 <!-- 手機版漢堡選單 -->
                 <button class="md:hidden text-2xl" id="mobile-menu-btn">
@@ -346,7 +346,7 @@
         <a href="#" class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
             <i class="fa-brands fa-line text-2xl"></i>
         </a>
-        <a href="#" class="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+        <a href="/cart/" class="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
             <i class="fa-solid fa-cart-shopping text-xl"></i>
         </a>
         <button id="to-top" class="w-12 h-12 bg-white text-primary rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-all hidden">
@@ -355,6 +355,14 @@
     </div>
 
     <script>
+        const CART_KEY = 'chongdien_cart';
+        const getCartCount = () => {
+            const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+            return cart.reduce((sum, item) => sum + item.qty, 0);
+        };
+        const cartCountEl = document.getElementById('cart-count');
+        if (cartCountEl) cartCountEl.textContent = getCartCount();
+
         // 捲動顯示效果 (Scroll Reveal)
         const observerOptions = {
             threshold: 0.1
