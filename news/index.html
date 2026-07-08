@@ -9,58 +9,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
 
     <style>
-        :root {
-            --primary: #1a3a3a; /* 深森林綠 */
-            --secondary: #c5a059; /* 琥珀金 */
-            --accent: #f4f1ea; /* 米白色背景 */
-            --text: #2d2d2d;
-        }
-
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        /* 主視覺背景（跟首頁相同的圖片與覆蓋漸層） */
+        /* 主視覺背景（跟首頁相同的圖片與覆蓋漸層，本頁專屬） */
         .page-hero {
             background:
                 linear-gradient(rgba(26, 58, 58, 0.8), rgba(26, 58, 58, 0.8)),
                 url('../assets/474303400_1056484336282974_4465244766951162280_n-49b1eb8c-59e8-4731-a006-325bc19ad963.png') center/cover;
         }
 
-        /* 動畫效果 */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .image-placeholder {
-            background: linear-gradient(
-                45deg,
-                #e5e7eb 25%,
-                #f3f4f6 25%,
-                #f3f4f6 50%,
-                #e5e7eb 50%,
-                #e5e7eb 75%,
-                #f3f4f6 75%,
-                #f3f4f6 100%
-            );
-            background-size: 20px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border: 2px dashed #d1d5db;
-            color: #9ca3af;
         }
     </style>
 </head>
@@ -166,21 +126,8 @@
         </div>
     </footer>
 
-    <script>
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+    <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>
 

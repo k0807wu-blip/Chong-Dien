@@ -9,48 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --primary: #1a3a3a;
-            --secondary: #c5a059;
-            --accent: #f4f1ea;
-            --text: #2d2d2d;
-        }
-
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .title-line::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--secondary);
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
     <!-- 導覽列 -->
@@ -120,29 +79,8 @@
         </div>
     </footer>
 
-    <script>
-        const CART_KEY = 'chongdien_cart';
-        const getCartCount = () => {
-            const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-            return cart.reduce((sum, item) => sum + item.qty, 0);
-        };
-        const cartCountEl = document.getElementById('cart-count');
-        if (cartCountEl) cartCountEl.textContent = getCartCount();
-
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');
-            else nav.classList.remove('scrolled', 'py-2');
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+    <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>
 

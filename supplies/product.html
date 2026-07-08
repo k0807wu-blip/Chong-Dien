@@ -9,72 +9,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
 
     <style>
-        :root {
-            --primary: #1a3a3a;
-            --secondary: #c5a059;
-            --accent: #f4f1ea;
-            --text: #2d2d2d;
-        }
-
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
         .image-placeholder {
-            background: linear-gradient(
-                45deg,
-                #e5e7eb 25%,
-                #f3f4f6 25%,
-                #f3f4f6 50%,
-                #e5e7eb 50%,
-                #e5e7eb 75%,
-                #f3f4f6 75%,
-                #f3f4f6 100%
-            );
-            background-size: 20px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-bottom: 1px solid #eee;
-            color: #9ca3af;
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .title-line::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--secondary);
-            margin-top: 10px;
-        }
-
-        /* 商品規格選取樣式（尺寸按鈕） */
-        .size-btn.active {
-            background-color: var(--secondary);
-            color: white;
-            border-color: var(--secondary);
         }
     </style>
 </head>
@@ -140,73 +79,11 @@
         </div>
     </footer>
 
+    <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/products.js"></script>
     <script>
-        const CART_KEY = 'chongdien_cart';
-        const products = [
-            {
-                id: 101,
-                category: '飼育箱系列',
-                name: '專業貝殼箱 (高透明度)',
-                description: '高透明觀察視窗，搭配穩定通風設計，讓飼育更安心。',
-                image: '../assets/tw-11134207-23030-rn5vswjkhlov2f-868bb07f-fbd1-4517-90a2-8c3dfbd69188.png',
-                sizes: [
-                    { key: 'S', price: 130, stock: 10 },
-                    { key: 'M', price: 180, stock: 10 },
-                    { key: 'L', price: 220, stock: 10 },
-                    { key: 'XL', price: 250, stock: 10 }
-                ]
-            },
-            {
-                id: 102,
-                category: '耗材系列',
-                name: '強效強發酵木屑 (5L)',
-                price: 150,
-                description: '針對幼蟲成長需求，提供良好發酵與保水效益。',
-                stock: 10
-            },
-            {
-                id: 103,
-                category: '營養系列',
-                name: '高營養強效果凍 (50入)',
-                price: 200,
-                description: '多種營養配方，幫助成長循環更穩定。',
-                stock: 10
-            },
-            {
-                id: 104,
-                category: '環境美化',
-                name: '天然樹皮裝飾組',
-                price: 80,
-                description: '打造更自然的躲藏空間，提升展示與互動樂趣。',
-                stock: 10
-            }
-        ];
-
         function formatTwd(n) {
             return new Intl.NumberFormat('zh-TW').format(n);
-        }
-
-        function getCart() {
-            return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-        }
-
-        function setCart(cart) {
-            localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        }
-
-        function refreshCartBadge() {
-            const count = getCart().reduce((sum, item) => sum + item.qty, 0);
-            const el = document.getElementById('cart-count');
-            if (el) el.textContent = count;
-        }
-
-        function addToCart(item) {
-            const cart = getCart();
-            const index = cart.findIndex(i => i.id === item.id && (i.size || '') === (item.size || ''));
-            if (index >= 0) cart[index].qty += item.qty;
-            else cart.push(item);
-            setCart(cart);
-            refreshCartBadge();
         }
 
         function renderProduct(product) {
@@ -379,7 +256,7 @@
 
         const params = new URLSearchParams(window.location.search);
         const id = Number(params.get('id'));
-        const product = products.find(p => p.id === id);
+        const product = PRODUCTS.find(p => p.id === id);
 
         if (!product) {
             const card = document.getElementById('product-card');
@@ -399,20 +276,8 @@
             renderProduct(product);
         }
         refreshCartBadge();
-
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');
-            else nav.classList.remove('scrolled', 'py-2');
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>
 

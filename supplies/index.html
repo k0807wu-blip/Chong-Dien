@@ -9,71 +9,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
 
     <style>
-        :root {
-            --primary: #1a3a3a;
-            --secondary: #c5a059;
-            --accent: #f4f1ea;
-            --text: #2d2d2d;
-        }
-
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .image-placeholder {
-            background: linear-gradient(
-                45deg,
-                #e5e7eb 25%,
-                #f3f4f6 25%,
-                #f3f4f6 50%,
-                #e5e7eb 50%,
-                #e5e7eb 75%,
-                #f3f4f6 75%,
-                #f3f4f6 100%
-            );
-            background-size: 20px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-bottom: 1px solid #eee;
-            color: #9ca3af;
-        }
-
-        .size-btn.active {
-            background-color: var(--secondary);
-            color: white;
-            border-color: var(--secondary);
-        }
-
-        .title-line::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--secondary);
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -131,98 +71,8 @@
     <!-- 商品列表區 -->
     <main class="py-16">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- 商品卡片（預設庫存=10） -->
-
-                <!-- 商品 1 -->
-                <a href="/supplies/product.html?id=101" class="block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group reveal">
-                    <div class="aspect-square overflow-hidden relative">
-                        <img
-                            src="../assets/tw-11134207-23030-rn5vswjkhlov2f-868bb07f-fbd1-4517-90a2-8c3dfbd69188.png"
-                            alt="專業貝殼箱照片"
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                        <span class="absolute top-4 left-4 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full">熱銷款式</span>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-xs text-secondary font-bold mb-1 tracking-widest">飼育箱系列</p>
-                        <h3 class="text-xl font-black text-primary mb-2">專業貝殼箱 (高透明度)</h3>
-                        <p class="text-sm text-gray-500 mb-4">點擊查看規格與庫存</p>
-                        <div class="flex items-center justify-between">
-                            <div class="text-primary">
-                                <span class="text-sm font-bold">TWD</span>
-                                <span class="text-2xl font-black ml-1 tracking-tighter">130</span>
-                            </div>
-                            <span class="w-10 h-10 bg-primary text-white rounded-full hover:bg-secondary transition-all flex items-center justify-center">
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 商品 2 -->
-                <a href="/supplies/product.html?id=102" class="block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group reveal" style="transition-delay: 0.1s;">
-                    <div class="aspect-square image-placeholder relative">
-                        <i class="fa-solid fa-vial text-6xl opacity-20 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-xs text-secondary font-bold mb-1 tracking-widest">耗材系列</p>
-                        <h3 class="text-xl font-black text-primary mb-2">強效強發酵木屑 (5L)</h3>
-                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">點擊查看庫存</p>
-                        <div class="flex items-center justify-between">
-                            <div class="text-primary">
-                                <span class="text-sm font-bold">TWD</span>
-                                <span class="text-2xl font-black ml-1 tracking-tighter">150</span>
-                            </div>
-                            <span class="w-10 h-10 bg-primary text-white rounded-full hover:bg-secondary transition-all flex items-center justify-center">
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 商品 3 -->
-                <a href="/supplies/product.html?id=103" class="block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group reveal" style="transition-delay: 0.2s;">
-                    <div class="aspect-square image-placeholder relative">
-                        <i class="fa-solid fa-cookie text-6xl opacity-20 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-xs text-secondary font-bold mb-1 tracking-widest">營養系列</p>
-                        <h3 class="text-xl font-black text-primary mb-2">高營養強效果凍 (50入)</h3>
-                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">點擊查看庫存</p>
-                        <div class="flex items-center justify-between">
-                            <div class="text-primary">
-                                <span class="text-sm font-bold">TWD</span>
-                                <span class="text-2xl font-black ml-1 tracking-tighter">200</span>
-                            </div>
-                            <span class="w-10 h-10 bg-primary text-white rounded-full hover:bg-secondary transition-all flex items-center justify-center">
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 商品 4 -->
-                <a href="/supplies/product.html?id=104" class="block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group reveal" style="transition-delay: 0.3s;">
-                    <div class="aspect-square image-placeholder relative">
-                        <i class="fa-solid fa-tree text-6xl opacity-20 group-hover:scale-110 transition-transform duration-500"></i>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-xs text-secondary font-bold mb-1 tracking-widest">環境美化</p>
-                        <h3 class="text-xl font-black text-primary mb-2">天然樹皮裝飾組</h3>
-                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">點擊查看庫存</p>
-                        <div class="flex items-center justify-between">
-                            <div class="text-primary">
-                                <span class="text-sm font-bold">TWD</span>
-                                <span class="text-2xl font-black ml-1 tracking-tighter">80</span>
-                            </div>
-                            <span class="w-10 h-10 bg-primary text-white rounded-full hover:bg-secondary transition-all flex items-center justify-center">
-                                <i class="fa-solid fa-arrow-right"></i>
-                            </span>
-                        </div>
-                    </div>
-                </a>
-
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- 商品卡片由 /assets/js/products.js 的 PRODUCTS 資料動態產生 -->
             </div>
         </div>
     </main>
@@ -239,32 +89,47 @@
         </div>
     </footer>
 
+    <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/products.js"></script>
     <script>
-        const CART_KEY = 'chongdien_cart';
-        const getCartCount = () => {
-            const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-            return cart.reduce((sum, item) => sum + item.qty, 0);
-        };
-        const cartCountEl = document.getElementById('cart-count');
-        if (cartCountEl) cartCountEl.textContent = getCartCount();
+        function priceLabel(p) {
+            return p.sizes && p.sizes.length ? Math.min(...p.sizes.map(s => s.price)) : p.price;
+        }
 
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('scrolled', 'py-2');
-            } else {
-                nav.classList.remove('scrolled', 'py-2');
-            }
-        };
+        function productCardHtml(p, idx) {
+            const media = p.image
+                ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />`
+                : `<i class="fa-solid ${p.icon} text-6xl opacity-20 group-hover:scale-110 transition-transform duration-500"></i>`;
+            const badge = p.badge
+                ? `<span class="absolute top-4 left-4 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full">${p.badge}</span>`
+                : '';
+            return `
+                <a href="/supplies/product.html?id=${p.id}" class="block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group reveal" style="transition-delay: ${idx * 0.1}s;">
+                    <div class="aspect-square ${p.image ? 'overflow-hidden' : 'image-placeholder'} relative">
+                        ${media}
+                        ${badge}
+                    </div>
+                    <div class="p-6">
+                        <p class="text-xs text-secondary font-bold mb-1 tracking-widest">${p.category}</p>
+                        <h3 class="text-xl font-black text-primary mb-2">${p.name}</h3>
+                        <p class="text-sm text-gray-500 mb-4">${p.listNote}</p>
+                        <div class="flex items-center justify-between">
+                            <div class="text-primary">
+                                <span class="text-sm font-bold">TWD</span>
+                                <span class="text-2xl font-black ml-1 tracking-tighter">${priceLabel(p)}</span>
+                            </div>
+                            <span class="w-10 h-10 bg-primary text-white rounded-full hover:bg-secondary transition-all flex items-center justify-center">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        document.getElementById('product-grid').innerHTML = PRODUCTS.map(productCardHtml).join('');
     </script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>
 

@@ -7,32 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1a3a3a;
-            --secondary: #c5a059;
-            --accent: #f4f1ea;
-            --text: #2d2d2d;
-        }
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-        }
-        header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .title-line::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--secondary);
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body>
     <header class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm" id="navbar">
@@ -54,7 +29,7 @@
                 <a href="/index.html#contact" class="hover:text-[#c5a059] transition-colors">關於我們</a>
             </nav>
             <a href="/cart/" class="bg-[#1a3a3a] text-white px-5 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all">
-                <i class="fa-solid fa-basket-shopping mr-2"></i><span id="cart-count">(0)</span>
+                <i class="fa-solid fa-basket-shopping mr-2"></i>(<span id="cart-count">0</span>)
             </a>
         </div>
     </header>
@@ -93,23 +68,11 @@
         </div>
     </main>
 
+    <script src="/assets/js/cart.js"></script>
     <script>
-        const CART_KEY = 'chongdien_cart';
-        const twd = n => `TWD ${new Intl.NumberFormat('zh-TW').format(n)}`;
-        const getCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-        const setCart = cart => localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        const escapeHtml = s => String(s).replace(/[&<>"']/g, c => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-
-        function updateCartBadge(cart) {
-            const count = cart.reduce((sum, i) => sum + i.qty, 0);
-            document.getElementById('cart-count').textContent = `(${count})`;
-        }
-
         function render() {
             const cart = getCart();
-            updateCartBadge(cart);
+            refreshCartBadge();
             const wrap = document.getElementById('cart-items');
             const empty = document.getElementById('empty-state');
             const checkoutBtn = document.getElementById('checkout-btn');
@@ -165,14 +128,9 @@
             render();
         });
 
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');
-            else nav.classList.remove('scrolled', 'py-2');
-        };
-
         render();
     </script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>
 

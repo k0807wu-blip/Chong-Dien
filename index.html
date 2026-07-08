@@ -10,25 +10,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
 
     <style>
-        :root {
-            --primary: #1a3a3a; /* 深森林綠 */
-            --secondary: #c5a059; /* 琥珀金 */
-            --accent: #f4f1ea; /* 米白色背景 */
-            --text: #2d2d2d;
-        }
-
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        /* 漸層與背景裝飾 */
+        /* 漸層與背景裝飾（首頁專屬） */
         .hero-gradient {
-            background: linear-gradient(rgba(26, 58, 58, 0.8), rgba(26, 58, 58, 0.8)), 
+            background: linear-gradient(rgba(26, 58, 58, 0.8), rgba(26, 58, 58, 0.8)),
                         url('./assets/474303400_1056484336282974_4465244766951162280_n-49b1eb8c-59e8-4731-a006-325bc19ad963.png') center/cover;
         }
 
@@ -37,42 +24,8 @@
             color: transparent;
         }
 
-        /* 動畫效果 */
         .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .hover-lift {
-            transition: transform 0.3s ease;
-        }
-
-        .hover-lift:hover {
-            transform: translateY(-10px);
-        }
-
-        /* 標題裝飾 */
-        .title-underline::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: var(--secondary);
-            margin-top: 8px;
-        }
-
-        /* 懸浮按鈕 */
-        .sticky-social {
-            position: fixed;
-            right: 20px;
-            bottom: 100px;
-            z-index: 50;
+            transition-duration: 0.8s;
         }
     </style>
 </head>
@@ -354,69 +307,7 @@
         </button>
     </div>
 
-    <script>
-        const CART_KEY = 'chongdien_cart';
-        const getCartCount = () => {
-            const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
-            return cart.reduce((sum, item) => sum + item.qty, 0);
-        };
-        const cartCountEl = document.getElementById('cart-count');
-        if (cartCountEl) cartCountEl.textContent = getCartCount();
-
-        // 捲動顯示效果 (Scroll Reveal)
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // 導覽列捲動變色
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            const toTop = document.getElementById('to-top');
-            if (window.scrollY > 50) {
-                nav.classList.add('py-2', 'bg-white/100');
-                toTop.classList.remove('hidden');
-            } else {
-                nav.classList.remove('py-2', 'bg-white/100');
-                toTop.classList.add('hidden');
-            }
-        };
-
-        // 手機選單控制
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const closeBtn = document.getElementById('close-menu');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        });
-
-        closeBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        });
-
-        document.querySelectorAll('.mobile-link').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            });
-        });
-
-        // 置頂按鈕
-        document.getElementById('to-top').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
+    <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>

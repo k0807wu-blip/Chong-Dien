@@ -9,66 +9,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
 
     <style>
-        :root {
-            --primary: #1a3a3a; /* 深森林綠 */
-            --secondary: #c5a059; /* 琥珀金 */
-            --accent: #f4f1ea; /* 米白色背景 */
-            --text: #2d2d2d;
-        }
-
-        body {
-            font-family: 'Outfit', 'Noto Sans TC', sans-serif;
-            background-color: var(--accent);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        header.scrolled {
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .image-placeholder {
-            background: linear-gradient(
-                45deg,
-                #e5e7eb 25%,
-                #f3f4f6 25%,
-                #f3f4f6 50%,
-                #e5e7eb 50%,
-                #e5e7eb 75%,
-                #f3f4f6 75%,
-                #f3f4f6 100%
-            );
-            background-size: 20px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #9ca3af;
-        }
-
-        .title-line::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: var(--secondary);
-            margin-top: 10px;
-        }
-
+        /* 本頁專屬：課程卡片圖片放大效果 */
         .course-card:hover .course-img {
             transform: scale(1.05);
         }
@@ -222,21 +166,8 @@
         </div>
     </footer>
 
-    <script>
-        window.onscroll = function() {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled', 'py-2');
-            else nav.classList.remove('scrolled', 'py-2');
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    </script>
+    <script src="/assets/js/cart.js"></script>
+    <script src="/assets/js/ui.js"></script>
 </body>
 </html>
 
