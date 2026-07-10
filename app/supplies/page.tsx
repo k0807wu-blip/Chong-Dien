@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import ProductCard from '@/components/ProductCard';
 import Footer from '@/components/Footer';
-import { PRODUCTS } from '@/lib/products';
+import { getProducts } from '@/lib/products';
 
 export const metadata: Metadata = {
   title: '養育用品 | 蟲殿 - 昆蟲生態館',
 };
 
-export default function SuppliesPage() {
+export default async function SuppliesPage() {
+  const products = await getProducts();
+
   return (
     <>
       <section className="pt-32 pb-12 bg-white">
@@ -37,7 +39,7 @@ export default function SuppliesPage() {
       <main className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {PRODUCTS.map((product, idx) => (
+            {products.map((product, idx) => (
               <ProductCard key={product.id} product={product} delay={idx * 0.1} />
             ))}
           </div>

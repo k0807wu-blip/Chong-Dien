@@ -26,7 +26,7 @@ export default function ProductDetail({ product }: { product: Product }) {
     <i className="fa-solid fa-box-open text-6xl opacity-20"></i>
   );
 
-  if (product.sizes && product.sizes.length) {
+  if (product.sizes.length > 0) {
     const selected = product.sizes.find((s) => s.key === selectedSizeKey) ?? null;
 
     return (

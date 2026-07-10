@@ -1,5 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
+export { twd } from '@/lib/currency';
+
 export const CART_KEY = 'chongdien_cart';
 export const CART_UPDATED_EVENT = 'cart:updated';
 
@@ -11,8 +13,6 @@ export type CartItem = {
   price: number;
   qty: number;
 };
-
-export const twd = (n: number) => `TWD ${new Intl.NumberFormat('zh-TW').format(n)}`;
 
 export function getCart(): CartItem[] {
   if (typeof window === 'undefined') return [];

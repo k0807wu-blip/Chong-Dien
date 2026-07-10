@@ -13,4 +13,81 @@ model User {
   name         String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  orders Order[]
+}
+
+enum OrderStatus {
+  PENDING
+}
+
+enum PaymentMethod {
+  ATM_TRANSFER
+  LINE_PAY
+  COD
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  category    String
+  name        String
+  description String
+  listNote    String
+  image       String?
+  icon        String?
+  badge       String?
+  price       Int?
+  stock       Int?
+  sizes       ProductSize[]
+  orderItems  OrderItem[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model ProductSize {
+  id         Int         @id @default(autoincrement())
+  productId  Int
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  key        String
+  price      Int
+  stock      Int
+  orderItems OrderItem[]
+
+  @@unique([productId, key])
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  userId        String?
+  user          User?         @relation(fields: [userId], references: [id])
+  status        OrderStatus   @default(PENDING)
+  recipientName String
+  phone         String
+  address       String
+  paymentMethod PaymentMethod
+  note          String?
+  totalAmount   Int
+  items         OrderItem[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id            String       @id @default(cuid())
+  orderId       String
+  order         Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     Int
+  product       Product      @relation(fields: [productId], references: [id])
+  productSizeId Int?
+  productSize   ProductSize? @relation(fields: [productSizeId], references: [id])
+
+  nameSnapshot    String
+  sizeKeySnapshot String?
+  unitPrice       Int
+  qty             Int
+
+  @@index([orderId])
+  @@index([productId])
 }

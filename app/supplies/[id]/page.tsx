@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = getProduct(Number(id));
+  const product = await getProduct(Number(id));
 
   return (
     <>
@@ -24,7 +24,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 {product ? product.name : '商品'}
               </h1>
             </div>
-            {product?.sizes ? null : product ? (
+            {product && product.sizes.length === 0 ? (
               <span className="px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-bold">
                 庫存：{product.stock}
               </span>
