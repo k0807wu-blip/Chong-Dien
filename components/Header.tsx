@@ -11,7 +11,6 @@ const NAV_ITEMS = [
   { href: '/news', label: '最新消息' },
   { href: '/supplies', label: '養育用品' },
   { href: '/lives', label: '活體訂購' },
-  { href: '/#hotel', label: '蟲蟲旅館' },
   { href: '/courses', label: '大師課程' },
   { href: '/#contact', label: '關於我們' },
 ];

@@ -4,13 +4,25 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+const GOOGLE_ERROR_MESSAGES: Record<string, string> = {
+  google_state_mismatch: '登入驗證失敗，請重新嘗試。',
+  google_not_configured: 'Google 登入尚未設定完成。',
+  google_token_exchange_failed: 'Google 登入失敗，請稍後再試。',
+  google_no_id_token: 'Google 登入失敗，請稍後再試。',
+  google_invalid_id_token: 'Google 登入驗證失敗，請稍後再試。',
+  google_email_not_verified: '這個 Google 帳號的 Email 尚未驗證，無法使用。',
+};
+
 export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const googleError = searchParams.get('error');
+  const [error, setError] = useState<string | null>(
+    googleError ? (GOOGLE_ERROR_MESSAGES[googleError] ?? '登入失敗，請稍後再試。') : null
+  );
   const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -44,6 +56,21 @@ export default function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   return (
     <div className="max-w-md mx-auto bg-white rounded-3xl shadow-sm p-8">
       <h1 className="text-2xl font-black text-primary mb-6">{mode === 'register' ? '會員註冊' : '會員登入'}</h1>
+
+      <a
+        href="/api/auth/google/start"
+        className="flex items-center justify-center gap-2 w-full border border-gray-300 rounded-xl py-3 font-bold text-text hover:bg-gray-50 transition-all"
+      >
+        <i className="fa-brands fa-google text-secondary"></i>
+        使用 Google {mode === 'register' ? '註冊' : '登入'}
+      </a>
+
+      <div className="flex items-center gap-3 my-6">
+        <div className="flex-1 h-px bg-gray-200"></div>
+        <span className="text-xs text-gray-400">或</span>
+        <div className="flex-1 h-px bg-gray-200"></div>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {mode === 'register' && (
           <div>

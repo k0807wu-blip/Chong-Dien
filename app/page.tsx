@@ -55,10 +55,9 @@ export default function HomePage() {
 
       {/* 快速導覽功能區 */}
       <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="container mx-auto px-4 grid grid-cols-3 gap-8">
           {[
             { icon: 'fa-bug', title: '最新消息', sub: 'Beetle Shop' },
-            { icon: 'fa-hotel', title: '蟲蟲旅館', sub: 'Hotel & Care' },
             { icon: 'fa-flask-vial', title: '養育耗材', sub: 'Supplies' },
             { icon: 'fa-graduation-cap', title: '標本課程', sub: 'Workshops' },
           ].map((item) => (

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { getSessionUser } from '@/lib/auth';
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 
 const orderRequestSchema = z.object({
   recipientName: z.string().min(1),
@@ -33,6 +34,15 @@ class InsufficientStockError extends Error {
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { allowed, retryAfterSeconds } = await checkRateLimit(`orders:${ip}`, 10, 60 * 60 * 1000);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: '嘗試次數過多，請稍後再試。' },
+      { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+    );
+  }
+
   const body = await request.json().catch(() => null);
   const parsed = orderRequestSchema.safeParse(body);
   if (!parsed.success) {

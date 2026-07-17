@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { hashPassword, signSession, sessionCookieOptions, SESSION_COOKIE } from '@/lib/auth';
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -10,6 +11,15 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { allowed, retryAfterSeconds } = await checkRateLimit(`register:${ip}`, 5, 15 * 60 * 1000);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: '嘗試次數過多，請稍後再試。' },
+      { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+    );
+  }
+
   const body = await request.json().catch(() => null);
   const parsed = registerSchema.safeParse(body);
   if (!parsed.success) {

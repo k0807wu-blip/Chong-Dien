@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { verifyPassword, signSession, sessionCookieOptions, SESSION_COOKIE } from '@/lib/auth';
+import { checkRateLimit, getClientIp } from '@/lib/rate-limit';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -9,8 +10,18 @@ const loginSchema = z.object({
 });
 
 const INVALID_CREDENTIALS = { error: '帳號或密碼錯誤' } as const;
+const RATE_LIMIT_MESSAGE = { error: '嘗試次數過多，請稍後再試。' } as const;
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { allowed, retryAfterSeconds } = await checkRateLimit(`login:${ip}`, 5, 15 * 60 * 1000);
+  if (!allowed) {
+    return NextResponse.json(RATE_LIMIT_MESSAGE, {
+      status: 429,
+      headers: { 'Retry-After': String(retryAfterSeconds) },
+    });
+  }
+
   const body = await request.json().catch(() => null);
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success) {
@@ -19,7 +30,7 @@ export async function POST(request: Request) {
   const { email, password } = parsed.data;
 
   const user = await prisma.user.findUnique({ where: { email } });
-  const valid = user ? await verifyPassword(password, user.passwordHash) : false;
+  const valid = user?.passwordHash ? await verifyPassword(password, user.passwordHash) : false;
   if (!user || !valid) {
     return NextResponse.json(INVALID_CREDENTIALS, { status: 401 });
   }
