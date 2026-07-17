@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       : await prisma.user.create({ data: { email, name, googleId, passwordHash: null } });
   }
 
-  const sessionUser = { id: user.id, email: user.email, name: user.name };
+  const sessionUser = { id: user.id, email: user.email, name: user.name, role: user.role };
   const token = await signSession(sessionUser);
 
   const response = NextResponse.redirect(`${origin}/account`);

@@ -10,16 +10,15 @@ const loginSchema = z.object({
 });
 
 const INVALID_CREDENTIALS = { error: '帳號或密碼錯誤' } as const;
-const RATE_LIMIT_MESSAGE = { error: '嘗試次數過多，請稍後再試。' } as const;
 
 export async function POST(request: Request) {
   const ip = getClientIp(request);
-  const { allowed, retryAfterSeconds } = await checkRateLimit(`login:${ip}`, 5, 15 * 60 * 1000);
+  const { allowed, retryAfterSeconds } = await checkRateLimit(`admin-login:${ip}`, 5, 15 * 60 * 1000);
   if (!allowed) {
-    return NextResponse.json(RATE_LIMIT_MESSAGE, {
-      status: 429,
-      headers: { 'Retry-After': String(retryAfterSeconds) },
-    });
+    return NextResponse.json(
+      { error: '嘗試次數過多，請稍後再試。' },
+      { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+    );
   }
 
   const body = await request.json().catch(() => null);
@@ -31,7 +30,9 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.findUnique({ where: { email } });
   const valid = user?.passwordHash ? await verifyPassword(password, user.passwordHash) : false;
-  if (!user || !valid) {
+
+  // 密碼對但不是 ADMIN 也一律回一樣的通用錯誤訊息，不透露「帳密正確、只是權限不夠」
+  if (!user || !valid || user.role !== 'ADMIN') {
     return NextResponse.json(INVALID_CREDENTIALS, { status: 401 });
   }
 

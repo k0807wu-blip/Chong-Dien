@@ -14,12 +14,18 @@ model RateLimitAttempt {
   @@index([key, createdAt])
 }
 
+enum Role {
+  MEMBER
+  ADMIN
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
   passwordHash String?
   googleId     String?  @unique
   name         String
+  role         Role     @default(MEMBER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -28,6 +34,10 @@ model User {
 
 enum OrderStatus {
   PENDING
+  PAID
+  SHIPPED
+  COMPLETED
+  CANCELLED
 }
 
 enum PaymentMethod {

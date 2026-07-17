@@ -2,15 +2,10 @@ import type { Metadata } from 'next';
 import { getSessionUser } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { twd } from '@/lib/currency';
+import { ORDER_STATUS_BADGE_CLASSES, ORDER_STATUS_LABELS, PAYMENT_METHOD_LABELS } from '@/lib/orders';
 
 export const metadata: Metadata = {
   title: '會員專區 | 蟲殿 - 昆蟲生態館',
-};
-
-const PAYMENT_METHOD_LABELS: Record<string, string> = {
-  ATM_TRANSFER: 'ATM 匯款',
-  LINE_PAY: 'LINE Pay',
-  COD: '門市取貨付款',
 };
 
 function formatDate(date: Date) {
@@ -58,9 +53,16 @@ export default async function AccountPage() {
                       <p className="text-xs text-gray-400">訂單編號 {order.id}</p>
                       <p className="text-sm text-gray-500">{formatDate(order.createdAt)}</p>
                     </div>
-                    <span className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-xs font-bold">
-                      {PAYMENT_METHOD_LABELS[order.paymentMethod] ?? order.paymentMethod}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-xs font-bold">
+                        {PAYMENT_METHOD_LABELS[order.paymentMethod] ?? order.paymentMethod}
+                      </span>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-bold ${ORDER_STATUS_BADGE_CLASSES[order.status]}`}
+                      >
+                        {ORDER_STATUS_LABELS[order.status]}
+                      </span>
+                    </div>
                   </div>
                   <div className="space-y-1 text-sm text-gray-600">
                     {order.items.map((item) => (

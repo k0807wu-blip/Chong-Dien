@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   const passwordHash = await hashPassword(password);
   const user = await prisma.user.create({ data: { email, passwordHash, name } });
 
-  const sessionUser = { id: user.id, email: user.email, name: user.name };
+  const sessionUser = { id: user.id, email: user.email, name: user.name, role: user.role };
   const token = await signSession(sessionUser);
 
   const response = NextResponse.json({ user: sessionUser }, { status: 201 });
