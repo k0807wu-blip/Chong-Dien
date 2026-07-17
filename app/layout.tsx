@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_TC, Outfit } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/Header';
-import StickySocial from '@/components/StickySocial';
-import { getSessionUser } from '@/lib/auth';
 
 const notoSansTC = Noto_Sans_TC({
   variable: '--font-noto-sans-tc',
@@ -23,9 +20,7 @@ export const metadata: Metadata = {
     '歡迎來到蟲殿昆蟲生態館。我們提供專業的甲蟲買賣、優質飼育耗材、標本代工製作及深度的昆蟲生態課程，為您打造最專業的昆蟲愛好者殿堂。',
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const user = await getSessionUser();
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-TW" className={`${notoSansTC.variable} ${outfit.variable}`}>
       <head>
@@ -34,11 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         />
       </head>
-      <body>
-        <Header user={user} />
-        {children}
-        <StickySocial />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

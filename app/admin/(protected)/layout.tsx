@@ -6,7 +6,7 @@ import AdminLogoutButton from '@/components/admin/AdminLogoutButton';
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await getSessionUser();
   if (!user || user.role !== 'ADMIN') {
-    redirect('/admin/login');
+    redirect('/login');
   }
 
   return (
@@ -16,15 +16,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <div className="flex items-center gap-6">
             <span className="font-black tracking-widest">蟲殿後台</span>
             <nav className="flex items-center gap-4 text-sm">
-              <Link href="/admin/orders" className="hover:text-secondary transition-colors">
+              <Link href="/orders" className="hover:text-secondary transition-colors">
                 訂單管理
               </Link>
             </nav>
           </div>
           <div className="flex items-center gap-4 text-sm">
-            <Link href="/" className="hover:text-secondary transition-colors">
-              返回前台
-            </Link>
             <AdminLogoutButton />
           </div>
         </div>

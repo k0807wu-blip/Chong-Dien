@@ -50,7 +50,7 @@ export default async function AdminOrdersPage({
           {filters.map((f) => (
             <Link
               key={f.label}
-              href={f.value ? `/admin/orders?status=${f.value}` : '/admin/orders'}
+              href={f.value ? `/orders?status=${f.value}` : '/orders'}
               className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
                 filterStatus === f.value
                   ? 'bg-primary text-white'

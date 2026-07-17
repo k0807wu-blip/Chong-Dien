@@ -27,7 +27,7 @@ export default function AdminLoginForm() {
         setSubmitting(false);
         return;
       }
-      router.push('/admin/orders');
+      router.push('/orders');
       router.refresh();
     } catch {
       setError('網路異常，請稍後再試。');
