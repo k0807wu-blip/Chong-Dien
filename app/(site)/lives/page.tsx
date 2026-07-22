@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
-import Reveal from '@/components/Reveal';
+import ProductCard from '@/components/ProductCard';
 import Footer from '@/components/Footer';
+import { getProductsByType } from '@/lib/products';
 
 export const metadata: Metadata = {
   title: '活體訂購 | 蟲殿 - 昆蟲生態館',
 };
 
-export default function LivesPage() {
+export default async function LivesPage() {
+  const products = await getProductsByType('LIVE');
+
   return (
     <>
       <section className="pt-32 pb-12 bg-white">
@@ -22,13 +25,17 @@ export default function LivesPage() {
 
       <main className="py-16">
         <div className="container mx-auto px-4">
-          <Reveal className="active max-w-3xl mx-auto bg-white rounded-3xl shadow-sm p-8">
-            <h3 className="text-2xl font-black text-primary mb-4">此頁面先做骨架</h3>
-            <p className="text-gray-600 leading-loose">
-              目前「活體訂購」分頁尚未填入商品列表。
-              你接下來可以告訴我：要做哪些品項/類別、以及是否要像「養育用品」一樣使用商品 ID 分頁與庫存顯示。
-            </p>
-          </Reveal>
+          {products.length === 0 ? (
+            <div className="max-w-xl mx-auto bg-white rounded-3xl shadow-sm p-10 text-center text-gray-500">
+              目前尚無上架的活體商品，敬請期待。
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {products.map((product, idx) => (
+                <ProductCard key={product.id} product={product} delay={idx * 0.1} basePath="/lives" />
+              ))}
+            </div>
+          )}
         </div>
       </main>
 

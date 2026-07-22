@@ -11,14 +11,13 @@ export default function Footer({
     <footer className={`${bgClass} text-gray-400 py-12`}>
       <div className="container mx-auto px-4 text-center">
         <div className="flex justify-center space-x-6 mb-8 text-2xl">
-          <a href="#" className="hover:text-white">
+          <a
+            href="https://www.facebook.com/p/%E8%9F%B2%E6%AE%BF-100057642511788/?locale=zh_TW"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
             <i className="fa-brands fa-facebook"></i>
-          </a>
-          <a href="#" className="hover:text-white">
-            <i className="fa-brands fa-instagram"></i>
-          </a>
-          <a href="#" className="hover:text-white">
-            <i className="fa-brands fa-line"></i>
           </a>
         </div>
         <p className="mb-4">

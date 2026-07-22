@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CART_UPDATED_EVENT, getCartCount } from '@/lib/cart';
 import type { SessionUser } from '@/lib/auth';
 
@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { href: '/news', label: '最新消息' },
   { href: '/supplies', label: '養育用品' },
   { href: '/lives', label: '活體訂購' },
-  { href: '/courses', label: '大師課程' },
+  { href: '/storage', label: '溫控寄放' },
   { href: '/#contact', label: '關於我們' },
 ];
 
@@ -21,6 +21,8 @@ export default function Header({ user }: { user: SessionUser | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [cartBump, setCartBump] = useState(false);
+  const prevCartCountRef = useRef(0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -32,6 +34,7 @@ export default function Header({ user }: { user: SessionUser | null }) {
   useEffect(() => {
     const refresh = () => setCartCount(getCartCount());
     refresh();
+    prevCartCountRef.current = getCartCount();
     window.addEventListener(CART_UPDATED_EVENT, refresh);
     window.addEventListener('storage', refresh);
     return () => {
@@ -39,6 +42,16 @@ export default function Header({ user }: { user: SessionUser | null }) {
       window.removeEventListener('storage', refresh);
     };
   }, []);
+
+  useEffect(() => {
+    if (cartCount > prevCartCountRef.current) {
+      setCartBump(true);
+      const timer = setTimeout(() => setCartBump(false), 500);
+      prevCartCountRef.current = cartCount;
+      return () => clearTimeout(timer);
+    }
+    prevCartCountRef.current = cartCount;
+  }, [cartCount]);
 
   async function handleLogout() {
     await fetch('/api/auth/logout', { method: 'POST' });
@@ -107,7 +120,9 @@ export default function Header({ user }: { user: SessionUser | null }) {
 
             <Link
               href="/cart"
-              className="bg-[#1a3a3a] text-white px-4 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all"
+              className={`bg-[#1a3a3a] text-white px-4 py-2 rounded-full text-sm hover:bg-[#c5a059] transition-all inline-block ${
+                cartBump ? 'animate-cart-bump' : ''
+              }`}
             >
               <i className="fa-solid fa-basket-shopping mr-2"></i>
               購物車 (<span id="cart-count">{cartCount}</span>)

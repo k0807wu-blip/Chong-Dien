@@ -84,3 +84,59 @@ header.scrolled {
   bottom: 100px;
   z-index: 50;
 }
+
+/* 加入購物車：圖示跳動 */
+@keyframes cart-bump {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.3);
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-cart-bump {
+  animation: cart-bump 0.5s ease;
+}
+
+/* 訂單完成：卡片放大進場 */
+@keyframes success-scale-in {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-success-in {
+  animation: success-scale-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 訂單完成：打勾圖示描邊動畫 */
+@keyframes success-circle-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes success-check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.success-circle-bg {
+  stroke-dasharray: 252;
+  stroke-dashoffset: 252;
+  animation: success-circle-draw 0.6s ease-out forwards;
+}
+.success-check-mark {
+  stroke-dasharray: 58;
+  stroke-dashoffset: 58;
+  animation: success-check-draw 0.35s 0.5s ease-out forwards;
+}

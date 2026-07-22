@@ -25,6 +25,7 @@ docker compose up -d
 ```
 DATABASE_URL=postgresql://chongdien:chongdien_dev@localhost:5433/chongdien
 JWT_SECRET=<openssl rand -base64 32 產生的隨機字串>
+ANTHROPIC_API_KEY=<在 console.anthropic.com 申請的 API key，後台商品說明 AI 生成功能需要，沒設也不影響其他功能>
 ```
 
 ### 4. 套用資料庫 migration
@@ -45,12 +46,14 @@ npm run dev
 - **Prisma 7 + `@prisma/adapter-pg`**：Prisma 7 起，`PrismaClient` 不再自動從 schema 讀取連線字串，需透過 driver adapter 明確傳入（見 `lib/prisma.ts`）。CLI（`prisma migrate`）則透過 `prisma.config.ts` 讀取 `DATABASE_URL`
 - **會員系統**：`bcryptjs` 雜湊密碼、`jose` 簽發 7 天效期的 stateless JWT，存在 httpOnly cookie（`lib/auth.ts` / `lib/auth-edge.ts`）。沒有 Session 資料表，登出僅清除 cookie，無法強制撤銷單一 token
 - **購物車**：純 `localStorage`（`lib/cart.ts`），與會員帳號無關聯
+- **商品圖片**：後台上傳的圖片存在 PostgreSQL 的 `ProductImage` 資料表（`Bytes` 欄位），不是存到檔案系統。這樣本機開發跟 Zeabur 部署後行為完全一致，不需要額外設定 volume 或物件儲存——`Product.image` 欄位存的是 `/api/images/{id}` 這種路徑，由 `app/api/images/[id]/route.ts` 直接從資料庫讀出來 serve
+- **AI 生成商品說明**：後台輸入題詞後，`app/api/admin/generate-description/route.ts` 呼叫 Anthropic Messages API（`claude-sonnet-5`）產生繁體中文文案，生成後仍可在文字框手動調整。需要設定 `ANTHROPIC_API_KEY` 環境變數（本機 `.env` 跟 Zeabur 都要設），沒設定的話會顯示清楚的錯誤訊息，不影響其他後台功能
 
 ## 部署到 Zeabur
 
 1. 在 Zeabur 建立專案，連接 GitHub repo 對應分支，push 後會自動部署
 2. 在同一個 Zeabur 專案內加一個 **PostgreSQL** service，並把它的連線字串設定到 Next.js service 的 `DATABASE_URL` 環境變數
-3. 設定 `JWT_SECRET` 環境變數（正式環境請重新產生一組，不要沿用本機開發用的值）
+3. 設定 `JWT_SECRET` 環境變數（正式環境請重新產生一組，不要沿用本機開發用的值）；如果要用後台的 AI 生成商品說明功能，也要設定 `ANTHROPIC_API_KEY`
 4. `package.json` 已經設定好：
    - `"postinstall": "prisma generate"` — 因為 `node_modules/@prisma/client` 不會進 git，每次安裝套件後都要重新產生。這一步不需要連到資料庫，所以 `prisma.config.ts` 用 `process.env.DATABASE_URL`（沒設定時是 `undefined`）而不是會直接丟錯的 `env()` helper
    - `"start": "prisma migrate deploy && next start"` — migration 特意放在 **啟動階段**、不是 build 階段。像 Zeabur 這類平台的 build container 通常連不到其他 service（資料庫要到 runtime 才會被接上網路），把 `migrate deploy` 放進 `build` 會在那個階段直接連線失敗

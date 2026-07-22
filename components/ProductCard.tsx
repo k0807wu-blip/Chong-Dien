@@ -3,11 +3,19 @@ import Image from 'next/image';
 import Reveal from '@/components/Reveal';
 import { priceLabel, type Product } from '@/lib/products';
 
-export default function ProductCard({ product, delay }: { product: Product; delay?: number }) {
+export default function ProductCard({
+  product,
+  delay,
+  basePath = '/supplies',
+}: {
+  product: Product;
+  delay?: number;
+  basePath?: string;
+}) {
   return (
     <Reveal delay={delay}>
       <Link
-        href={`/supplies/${product.id}`}
+        href={`${basePath}/${product.id}`}
         className="block bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group"
       >
         <div className={`aspect-square relative ${product.image ? 'overflow-hidden' : 'image-placeholder'}`}>

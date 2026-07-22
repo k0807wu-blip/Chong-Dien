@@ -55,11 +55,10 @@ export default function HomePage() {
 
       {/* 快速導覽功能區 */}
       <section className="py-12 bg-white">
-        <div className="container mx-auto px-4 grid grid-cols-3 gap-8">
+        <div className="container mx-auto px-4 grid grid-cols-2 gap-8">
           {[
             { icon: 'fa-bug', title: '最新消息', sub: 'Beetle Shop' },
             { icon: 'fa-flask-vial', title: '養育耗材', sub: 'Supplies' },
-            { icon: 'fa-graduation-cap', title: '標本課程', sub: 'Workshops' },
           ].map((item) => (
             <a key={item.title} href="#" className="flex flex-col items-center group">
               <div className="w-20 h-20 bg-accent rounded-full flex items-center justify-center mb-4 group-hover:bg-secondary transition-all">
@@ -138,11 +137,11 @@ export default function HomePage() {
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center text-secondary shrink-0">
-                  <i className="fa-brands fa-line"></i>
+                  <i className="fa-brands fa-facebook-messenger"></i>
                 </div>
                 <div>
                   <h5 className="font-bold text-xl mb-1">匯款後通知</h5>
-                  <p className="text-gray-300">請私訊官方 LINE 提供匯款末五碼及收件資訊。</p>
+                  <p className="text-gray-300">請私訊官方 Messenger 提供匯款末五碼及收件資訊。</p>
                 </div>
               </div>
             </div>
@@ -182,25 +181,16 @@ export default function HomePage() {
           <Reveal delay={0.2}>
             <h2 className="text-4xl font-black mb-8">門市資訊</h2>
             <div className="grid grid-cols-2 gap-6 mb-10">
-              <a href="#" className="flex items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
+              <a
+                href="https://www.facebook.com/p/%E8%9F%B2%E6%AE%BF-100057642511788/?locale=zh_TW"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all"
+              >
                 <i className="fa-brands fa-facebook text-3xl text-blue-600 mr-4"></i>
                 <div>
                   <p className="text-xs text-gray-400">Facebook</p>
                   <p className="font-bold">蟲殿昆蟲館</p>
-                </div>
-              </a>
-              <a href="#" className="flex items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
-                <i className="fa-brands fa-instagram text-3xl text-pink-500 mr-4"></i>
-                <div>
-                  <p className="text-xs text-gray-400">Instagram</p>
-                  <p className="font-bold">insect_palace</p>
-                </div>
-              </a>
-              <a href="#" className="flex items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
-                <i className="fa-brands fa-line text-3xl text-green-500 mr-4"></i>
-                <div>
-                  <p className="text-xs text-gray-400">Line ID</p>
-                  <p className="font-bold">@chongdian</p>
                 </div>
               </a>
               <a href="tel:0289310007" className="flex items-center p-4 bg-white rounded-2xl shadow-sm hover:shadow-md transition-all">
@@ -218,16 +208,32 @@ export default function HomePage() {
               </h5>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex justify-between">
-                  <span>週二至週五：</span>
-                  <span className="font-bold">3.-10.</span>
+                  <span>星期三：</span>
+                  <span className="font-bold">15:00–22:00</span>
                 </li>
                 <li className="flex justify-between">
-                  <span>週六至週日：</span>
-                  <span className="font-bold">3.-10.</span>
+                  <span>星期四：</span>
+                  <span className="font-bold">15:00–22:00</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>星期五：</span>
+                  <span className="font-bold">15:00–22:00</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>星期六：</span>
+                  <span className="font-bold">14:00–21:00</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>星期日：</span>
+                  <span className="font-bold">14:00–19:00</span>
                 </li>
                 <li className="flex justify-between text-red-500">
-                  <span>每週一：</span>
-                  <span className="font-bold underline">公休</span>
+                  <span>星期一：</span>
+                  <span className="font-bold underline">休息</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>星期二：</span>
+                  <span className="font-bold">15:00–22:00</span>
                 </li>
               </ul>
               <p className="mt-6 text-sm text-gray-400">

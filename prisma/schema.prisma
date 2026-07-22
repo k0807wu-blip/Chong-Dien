@@ -46,8 +46,14 @@ enum PaymentMethod {
   COD
 }
 
+enum ProductType {
+  SUPPLY
+  LIVE
+}
+
 model Product {
   id          Int           @id @default(autoincrement())
+  type        ProductType   @default(SUPPLY)
   category    String
   name        String
   description String
@@ -55,12 +61,23 @@ model Product {
   image       String?
   icon        String?
   badge       String?
+  origin      String?
+  generation  String?
+  careNote    String?
+  specNote    String?
   price       Int?
   stock       Int?
   sizes       ProductSize[]
   orderItems  OrderItem[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  data      Bytes
+  mimeType  String
+  createdAt DateTime @default(now())
 }
 
 model ProductSize {

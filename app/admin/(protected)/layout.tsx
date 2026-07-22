@@ -19,6 +19,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <Link href="/orders" className="hover:text-secondary transition-colors">
                 訂單管理
               </Link>
+              <Link href="/products" className="hover:text-secondary transition-colors">
+                商品管理
+              </Link>
             </nav>
           </div>
           <div className="flex items-center gap-4 text-sm">

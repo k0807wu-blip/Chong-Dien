@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import Link from 'next/link';
 import { setCart, twd, useCart } from '@/lib/cart';
 
 type StockShortage = { productId: number; size?: string; requested: number; available: number };
@@ -17,8 +17,7 @@ const PAYMENT_METHODS = [
   { value: 'COD', label: '門市取貨付款' },
 ] as const;
 
-export default function CheckoutView() {
-  const router = useRouter();
+export default function CheckoutView({ isMember }: { isMember: boolean }) {
   const cart = useCart();
   const [recipientName, setRecipientName] = useState('');
   const [phone, setPhone] = useState('');
@@ -29,12 +28,6 @@ export default function CheckoutView() {
   const [stockShortages, setStockShortages] = useState<StockShortage[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submittedOrder, setSubmittedOrder] = useState<SubmittedOrder | null>(null);
-
-  useEffect(() => {
-    if (!submittedOrder) return;
-    const timer = setTimeout(() => router.push('/'), 1500);
-    return () => clearTimeout(timer);
-  }, [submittedOrder, router]);
 
   const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 
@@ -87,12 +80,61 @@ export default function CheckoutView() {
     return (
       <main className="pt-32 pb-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto bg-white rounded-2xl p-10 text-center">
+          <div className="max-w-xl mx-auto bg-white rounded-2xl p-10 text-center animate-success-in">
+            <svg className="mx-auto mb-4" width="88" height="88" viewBox="0 0 88 88" fill="none">
+              <circle
+                className="success-circle-bg"
+                cx="44"
+                cy="44"
+                r="40"
+                stroke="var(--color-secondary)"
+                strokeWidth="4"
+              />
+              <path
+                className="success-check-mark"
+                d="M24 44 L38 58 L64 30"
+                stroke="var(--color-secondary)"
+                strokeWidth="5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <h1 className="text-2xl font-black text-primary mb-3">訂單已送出，感謝你的訂購！</h1>
             <p className="text-gray-600">
               訂單編號 <span className="font-bold">{submittedOrder.id}</span>，總計 {twd(submittedOrder.totalAmount)}
             </p>
-            <p className="text-gray-500 mt-2">即將帶你回到首頁...</p>
+
+            {isMember ? (
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  href="/account"
+                  className="px-6 py-3 rounded-full bg-primary text-white font-bold hover:bg-secondary transition-all"
+                >
+                  查看我的訂單
+                </Link>
+                <Link
+                  href="/"
+                  className="px-6 py-3 rounded-full border border-primary/20 text-primary font-bold hover:bg-primary/5 transition-all"
+                >
+                  返回首頁
+                </Link>
+              </div>
+            ) : (
+              <div className="mt-8 space-y-3">
+                <p className="text-sm text-gray-500">
+                  登入會員即可隨時查詢歷史訂單。
+                  <Link href="/login" className="text-secondary font-bold hover:underline ml-1">
+                    立即登入 / 註冊
+                  </Link>
+                </p>
+                <Link
+                  href="/"
+                  className="inline-block px-6 py-3 rounded-full bg-primary text-white font-bold hover:bg-secondary transition-all"
+                >
+                  返回首頁
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </main>

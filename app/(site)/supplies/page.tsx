@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import ProductCard from '@/components/ProductCard';
 import Footer from '@/components/Footer';
-import { getProducts } from '@/lib/products';
+import { getProductsByType } from '@/lib/products';
 
 export const metadata: Metadata = {
   title: '養育用品 | 蟲殿 - 昆蟲生態館',
 };
 
 export default async function SuppliesPage() {
-  const products = await getProducts();
+  const products = await getProductsByType('SUPPLY');
 
   return (
     <>
